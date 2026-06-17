@@ -10,11 +10,10 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#1a1a1a;font-size:14px;min-height:100vh}
 .app{max-width:720px;margin:0 auto;padding:1rem}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #e0e0d8}
-.header h1{font-size:18px;font-weight:600;color:#1a1a1a}
+.header h1{font-size:18px;font-weight:600}
 .header-sub{font-size:12px;color:#888;margin-top:2px}
-.sync-status{font-size:11px;padding:4px 10px;border-radius:100px;background:#f0f0ea;color:#888}
-.sync-status.ok{background:#e1f5ee;color:#0f6e56}
-.sync-status.err{background:#fcebeb;color:#a32d2d}
+.sync{font-size:11px;padding:4px 10px;border-radius:100px;background:#f0f0ea;color:#888}
+.sync.ok{background:#e1f5ee;color:#0f6e56}.sync.err{background:#fcebeb;color:#a32d2d}
 .nav{display:flex;gap:2px;margin-bottom:1.5rem;background:#fff;border-radius:12px;padding:4px;border:1px solid #e0e0d8}
 .nav-btn{flex:1;padding:8px 4px;font-size:12px;cursor:pointer;border:none;border-radius:8px;color:#888;background:transparent;font-family:inherit;transition:all 0.15s;text-align:center}
 .nav-btn.active{background:#1a1a1a;color:#fff;font-weight:500}
@@ -31,6 +30,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .prog-fill.amber-fill{background:#ba7517}
 .prog-lbl{font-size:11px;color:#888;display:flex;justify-content:space-between}
 .hustle-card{background:#fff;border:1px solid #e0e0d8;border-radius:12px;margin-bottom:10px;overflow:hidden}
+.hustle-card.parked{opacity:0.5;border-style:dashed}
 .hustle-header{padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none}
 .hustle-header:hover{background:#fafafa}
 .hustle-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -48,10 +48,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .task-check.done{border-color:#1d9e75;background:#1d9e75}
 .task-check.done::after{content:'';display:block;width:5px;height:9px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);margin-top:-2px}
 .task-info{flex:1}
-.task-txt{font-size:13px;line-height:1.5;color:#1a1a1a}
+.task-txt{font-size:13px;line-height:1.5}
 .task-txt.done{text-decoration:line-through;color:#aaa}
 .task-meta{font-size:11px;color:#888;margin-top:3px;line-height:1.4}
 .xp-badge{font-size:10px;padding:2px 7px;border-radius:100px;background:#eeedfe;color:#3c3489;flex-shrink:0;margin-top:3px;white-space:nowrap;font-weight:500}
+.parked-badge{font-size:10px;padding:2px 7px;border-radius:100px;background:#f0f0ea;color:#888;flex-shrink:0;font-weight:500;border:1px solid #ddd}
 .chevron{font-size:14px;color:#aaa;transition:transform 0.2s;flex-shrink:0}
 .chevron.open{transform:rotate(180deg)}
 .reward-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
@@ -77,351 +78,294 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .type-badge{font-size:10px;padding:2px 7px;border-radius:100px;font-weight:500}
 .income-badge{background:#e1f5ee;color:#0f6e56}
 .expense-badge{background:#fcebeb;color:#a32d2d}
-.del-btn{background:none;border:none;cursor:pointer;color:#aaa;font-size:15px;padding:0 3px;line-height:1}
+.del-btn{background:none;border:none;cursor:pointer;color:#aaa;font-size:14px;padding:0 3px;line-height:1}
 .del-btn:hover{color:#e24b4a}
 .add-form{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;align-items:center}
 .add-form input,.add-form select{font-size:13px;padding:6px 9px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a;font-family:inherit}
-.add-form input:focus,.add-form select:focus{outline:none;border-color:#1d9e75}
 .btn{padding:7px 14px;font-size:13px;border:1px solid #ddd;border-radius:8px;cursor:pointer;background:#fff;color:#1a1a1a;font-family:inherit;transition:all 0.15s}
 .btn:hover{background:#f5f5f0}
 .btn-green{background:#1d9e75;border-color:#1d9e75;color:#fff}
 .btn-green:hover{background:#0f6e56}
 .streak-row{display:flex;gap:4px;flex-wrap:wrap;margin:10px 0}
-.streak-day{width:30px;height:30px;border-radius:7px;border:1px solid #e0e0d8;display:flex;align-items:center;justify-content:center;font-size:11px;color:#888;cursor:default;font-weight:500}
+.streak-day{width:30px;height:30px;border-radius:7px;border:1px solid #e0e0d8;display:flex;align-items:center;justify-content:center;font-size:11px;color:#888;font-weight:500}
 .streak-day.done{background:#1d9e75;border-color:#1d9e75;color:#fff}
 .streak-day.today{border-color:#1d9e75;color:#1d9e75;border-width:2px}
 .note-area{width:100%;font-size:13px;padding:8px 10px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a;resize:vertical;min-height:70px;font-family:inherit;line-height:1.5}
-.note-area:focus{outline:none;border-color:#1d9e75}
 .bar-wrap{display:flex;gap:4px;align-items:flex-end;height:90px}
 .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
 .bar-rect{width:100%;border-radius:3px 3px 0 0;min-height:3px}
 .bar-i{background:#1d9e75}.bar-e{background:#e24b4a}
 .bar-lbl{font-size:10px;color:#888;text-align:center;width:100%}
-.today-circle{width:48px;height:48px;border-radius:50%;border:2px solid #ddd;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
+.today-circle{width:48px;height:48px;border-radius:50%;border:2px solid #ddd;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;background:#fff}
 .today-circle:hover{border-color:#1d9e75}
 .today-circle.done{border-color:#1d9e75;background:#e1f5ee}
-@media(max-width:480px){
-  .metric-grid{grid-template-columns:repeat(2,1fr)}
-  .nav-btn{font-size:11px;padding:7px 2px}
-  .reward-grid{grid-template-columns:1fr 1fr}
-}
+@media(max-width:480px){.metric-grid{grid-template-columns:repeat(2,1fr)}.nav-btn{font-size:11px;padding:7px 2px}.reward-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="header">
-    <div>
-      <h1>STTP — 60k Challenge</h1>
-      <div class="header-sub">9 months. Real results. No fluff.</div>
+<div class="header">
+  <div><h1>STTP — 60k Challenge</h1><div class="header-sub">9 months. Real results. No fluff.</div></div>
+  <div class="sync" id="sync-st">Connecting...</div>
+</div>
+<div class="nav">
+  <button class="nav-btn active" onclick="nav('dashboard')">Dashboard</button>
+  <button class="nav-btn" onclick="nav('hustles')">Hustles</button>
+  <button class="nav-btn" onclick="nav('money')">Money</button>
+  <button class="nav-btn" onclick="nav('rewards')">Rewards</button>
+  <button class="nav-btn" onclick="nav('notes')">Notes</button>
+</div>
+
+<div id="dashboard" class="panel active">
+  <div class="metric-grid">
+    <div class="metric"><div class="metric-lbl">Total earned</div><div class="metric-val teal" id="d-earned">$0</div></div>
+    <div class="metric"><div class="metric-lbl">Net profit</div><div class="metric-val teal" id="d-net">$0</div></div>
+    <div class="metric"><div class="metric-lbl">Expenses</div><div class="metric-val red" id="d-exp">$0</div></div>
+    <div class="metric"><div class="metric-lbl">Reward budget</div><div class="metric-val amber" id="d-rbud">$0</div></div>
+    <div class="metric"><div class="metric-lbl">Day streak</div><div class="metric-val purple" id="d-streak">0</div></div>
+    <div class="metric"><div class="metric-lbl">Tasks done</div><div class="metric-val" id="d-tasks">0/0</div></div>
+  </div>
+  <div class="card">
+    <div class="sec-title">Main quest — $60,000 AUD</div>
+    <div class="prog-bg"><div class="prog-fill" id="main-bar" style="width:0%"></div></div>
+    <div class="prog-lbl"><span id="main-lbl">$0 earned</span><span id="main-pct">0% — $60,000 to go</span></div>
+  </div>
+  <div class="card">
+    <div class="sec-title">Today's check-in</div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="today-circle" id="today-check" onclick="toggleToday()"><i class="ti ti-check" style="font-size:22px;color:#aaa"></i></div>
+      <div>
+        <div style="font-size:14px;font-weight:600" id="today-lbl">Mark today as worked</div>
+        <div style="font-size:12px;color:#888;margin-top:2px" id="streak-lbl">0 day streak</div>
+      </div>
     </div>
-    <div class="sync-status" id="sync-st">Connecting...</div>
+    <div class="streak-row" id="streak-dots"></div>
   </div>
-
-  <div class="nav">
-    <button class="nav-btn active" onclick="nav('dashboard')">Dashboard</button>
-    <button class="nav-btn" onclick="nav('hustles')">Hustles</button>
-    <button class="nav-btn" onclick="nav('money')">Money</button>
-    <button class="nav-btn" onclick="nav('rewards')">Rewards</button>
-    <button class="nav-btn" onclick="nav('notes')">Notes</button>
+  <div class="card">
+    <div class="sec-title">Hustle XP overview</div>
+    <div id="dash-xp"></div>
   </div>
+</div>
 
-  <div id="dashboard" class="panel active">
+<div id="hustles" class="panel"><div id="hustle-list"></div></div>
+
+<div id="money" class="panel">
+  <div class="metric-grid">
+    <div class="metric"><div class="metric-lbl">Total income</div><div class="metric-val teal" id="m-inc">$0</div></div>
+    <div class="metric"><div class="metric-lbl">Total expenses</div><div class="metric-val red" id="m-exp">$0</div></div>
+    <div class="metric"><div class="metric-lbl">Net profit</div><div class="metric-val teal" id="m-net">$0</div></div>
+    <div class="metric"><div class="metric-lbl">This month</div><div class="metric-val" id="m-mon">$0</div></div>
+  </div>
+  <div class="card">
+    <div class="sec-title">Monthly overview</div>
+    <div style="display:flex;gap:14px;margin-bottom:10px;font-size:11px">
+      <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#1d9e75;border-radius:2px;display:inline-block"></span>Income</span>
+      <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#e24b4a;border-radius:2px;display:inline-block"></span>Expenses</span>
+    </div>
+    <div class="bar-wrap" id="money-chart"></div>
+    <div style="display:flex;gap:4px;margin-top:4px" id="money-chart-lbl"></div>
+  </div>
+  <div class="card">
+    <div class="sec-title">Log entry</div>
+    <div class="add-form">
+      <select id="e-type" style="width:95px"><option value="income">Income</option><option value="expense">Expense</option></select>
+      <input type="text" id="e-src" placeholder="Source / description" style="flex:1;min-width:100px"/>
+      <input type="number" id="e-amt" placeholder="Amount $" style="width:90px"/>
+      <input type="text" id="e-mon" placeholder="Month" style="width:75px"/>
+      <button class="btn btn-green" onclick="addEntry()">Add</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="sec-title">All entries</div>
+    <table class="tbl"><thead><tr><th style="width:75px">Type</th><th>Source</th><th style="width:80px">Amount</th><th style="width:70px">Month</th><th style="width:28px"></th></tr></thead><tbody id="entries-body"></tbody></table>
+  </div>
+</div>
+
+<div id="rewards" class="panel">
+  <div class="card">
+    <div class="sec-title">Reward economy — 5% of net profit</div>
     <div class="metric-grid">
-      <div class="metric"><div class="metric-lbl">Total earned</div><div class="metric-val teal" id="d-earned">$0</div></div>
-      <div class="metric"><div class="metric-lbl">Net profit</div><div class="metric-val teal" id="d-net">$0</div></div>
-      <div class="metric"><div class="metric-lbl">Expenses</div><div class="metric-val red" id="d-exp">$0</div></div>
-      <div class="metric"><div class="metric-lbl">Reward budget</div><div class="metric-val amber" id="d-rbud">$0</div></div>
-      <div class="metric"><div class="metric-lbl">Day streak</div><div class="metric-val purple" id="d-streak">0</div></div>
-      <div class="metric"><div class="metric-lbl">Tasks done</div><div class="metric-val" id="d-tasks">0/0</div></div>
+      <div class="metric"><div class="metric-lbl">Total budget</div><div class="metric-val amber" id="r-budget">$0</div></div>
+      <div class="metric"><div class="metric-lbl">Claimed</div><div class="metric-val red" id="r-claimed">$0</div></div>
+      <div class="metric"><div class="metric-lbl">Available</div><div class="metric-val teal" id="r-remaining">$0</div></div>
     </div>
-    <div class="card">
-      <div class="sec-title">Main quest — $60,000 AUD</div>
-      <div class="prog-bg"><div class="prog-fill" id="main-bar" style="width:0%"></div></div>
-      <div class="prog-lbl"><span id="main-lbl">$0 earned</span><span id="main-pct">0% — $60,000 to go</span></div>
-    </div>
-    <div class="card">
-      <div class="sec-title">Today's check-in</div>
-      <div style="display:flex;align-items:center;gap:14px">
-        <div class="today-circle" id="today-check" onclick="toggleToday()">
-          <i class="ti ti-check" style="font-size:22px;color:#aaa"></i>
-        </div>
-        <div>
-          <div style="font-size:14px;font-weight:600" id="today-lbl">Mark today as worked</div>
-          <div style="font-size:12px;color:#888;margin-top:2px" id="streak-lbl">0 day streak</div>
-        </div>
-      </div>
-      <div class="streak-row" id="streak-dots"></div>
-    </div>
-    <div class="card">
-      <div class="sec-title">Hustle XP overview</div>
-      <div id="dash-xp"></div>
-    </div>
+    <div class="prog-bg"><div class="prog-fill amber-fill" id="r-bar" style="width:0%"></div></div>
+    <div class="prog-lbl"><span>Budget used</span><span id="r-pct">0%</span></div>
   </div>
-
-  <div id="hustles" class="panel">
-    <div id="hustle-list"></div>
-  </div>
-
-  <div id="money" class="panel">
-    <div class="metric-grid">
-      <div class="metric"><div class="metric-lbl">Total income</div><div class="metric-val teal" id="m-inc">$0</div></div>
-      <div class="metric"><div class="metric-lbl">Total expenses</div><div class="metric-val red" id="m-exp">$0</div></div>
-      <div class="metric"><div class="metric-lbl">Net profit</div><div class="metric-val teal" id="m-net">$0</div></div>
-      <div class="metric"><div class="metric-lbl">This month</div><div class="metric-val" id="m-mon">$0</div></div>
-    </div>
-    <div class="card">
-      <div class="sec-title">Monthly overview</div>
-      <div style="display:flex;gap:14px;margin-bottom:10px;font-size:11px">
-        <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#1d9e75;border-radius:2px;display:inline-block"></span>Income</span>
-        <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#e24b4a;border-radius:2px;display:inline-block"></span>Expenses</span>
-      </div>
-      <div class="bar-wrap" id="money-chart"></div>
-      <div style="display:flex;gap:4px;margin-top:4px" id="money-chart-lbl"></div>
-    </div>
-    <div class="card">
-      <div class="sec-title">Log entry</div>
-      <div class="add-form">
-        <select id="e-type" style="width:95px"><option value="income">Income</option><option value="expense">Expense</option></select>
-        <input type="text" id="e-src" placeholder="Source / description" style="flex:1;min-width:100px"/>
-        <input type="number" id="e-amt" placeholder="Amount $" style="width:90px"/>
-        <input type="text" id="e-mon" placeholder="Month" style="width:75px"/>
-        <button class="btn btn-green" onclick="addEntry()">Add</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="sec-title">All entries</div>
-      <table class="tbl">
-        <thead><tr><th style="width:75px">Type</th><th>Source</th><th style="width:80px">Amount</th><th style="width:70px">Month</th><th style="width:28px"></th></tr></thead>
-        <tbody id="entries-body"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <div id="rewards" class="panel">
-    <div class="card">
-      <div class="sec-title">Reward economy — 5% of net profit</div>
-      <div class="metric-grid">
-        <div class="metric"><div class="metric-lbl">Total budget</div><div class="metric-val amber" id="r-budget">$0</div></div>
-        <div class="metric"><div class="metric-lbl">Claimed</div><div class="metric-val red" id="r-claimed">$0</div></div>
-        <div class="metric"><div class="metric-lbl">Available</div><div class="metric-val teal" id="r-remaining">$0</div></div>
-      </div>
-      <div class="prog-bg"><div class="prog-fill amber-fill" id="r-bar" style="width:0%"></div></div>
-      <div class="prog-lbl"><span>Budget used</span><span id="r-pct">0%</span></div>
-    </div>
-    <div class="reward-grid" id="reward-grid"></div>
-    <div class="card" style="margin-top:10px">
-      <div class="sec-title">Add custom reward</div>
-      <div class="add-form">
-        <input type="text" id="rw-name" placeholder="Reward name" style="flex:1;min-width:100px"/>
-        <input type="number" id="rw-cost" placeholder="Cost $" style="width:75px"/>
-        <select id="rw-tier" style="width:75px"><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option></select>
-        <input type="text" id="rw-unlock" placeholder="Unlock condition" style="width:130px"/>
-        <button class="btn btn-green" onclick="addReward()">Add</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="notes" class="panel">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
-      <button class="btn" onclick="changeWeek(-1)"><i class="ti ti-arrow-left"></i></button>
-      <span style="font-size:15px;font-weight:600;flex:1;text-align:center" id="wk-lbl">Week 1</span>
-      <button class="btn" onclick="changeWeek(1)"><i class="ti ti-arrow-right"></i></button>
-    </div>
-    <div class="card">
-      <div class="sec-title">What I did this week</div>
-      <textarea class="note-area" id="n-did" placeholder="Actions completed, videos published, hustle progress..."></textarea>
-      <div class="sec-title" style="margin-top:14px">Key learnings</div>
-      <textarea class="note-area" id="n-learned" placeholder="What worked, what didn't, what surprised you..."></textarea>
-      <div class="sec-title" style="margin-top:14px">Next week's top 3</div>
-      <textarea class="note-area" id="n-next" placeholder="The three things that matter most next week..."></textarea>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
-        <button class="btn btn-green" onclick="saveNote()">Save</button>
-        <span id="note-saved" style="font-size:12px;color:#0f6e56;opacity:0;transition:opacity 0.3s">Saved to Firebase</span>
-      </div>
+  <div class="reward-grid" id="reward-grid"></div>
+  <div class="card" style="margin-top:10px">
+    <div class="sec-title">Add custom reward</div>
+    <div class="add-form">
+      <input type="text" id="rw-name" placeholder="Reward name" style="flex:1;min-width:100px"/>
+      <input type="number" id="rw-cost" placeholder="Cost $" style="width:75px"/>
+      <select id="rw-tier" style="width:75px"><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option></select>
+      <input type="text" id="rw-unlock" placeholder="Unlock condition" style="width:130px"/>
+      <button class="btn btn-green" onclick="addReward()">Add</button>
     </div>
   </div>
 </div>
 
+<div id="notes" class="panel">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem">
+    <button class="btn" onclick="changeWeek(-1)"><i class="ti ti-arrow-left"></i></button>
+    <span style="font-size:15px;font-weight:600;flex:1;text-align:center" id="wk-lbl">Week 1</span>
+    <button class="btn" onclick="changeWeek(1)"><i class="ti ti-arrow-right"></i></button>
+  </div>
+  <div class="card">
+    <div class="sec-title">What I did this week</div>
+    <textarea class="note-area" id="n-did" placeholder="Actions completed, hustle progress, wins and losses..."></textarea>
+    <div class="sec-title" style="margin-top:14px">Key learnings</div>
+    <textarea class="note-area" id="n-learned" placeholder="What worked, what didn't, what surprised you..."></textarea>
+    <div class="sec-title" style="margin-top:14px">Next week's top 3</div>
+    <textarea class="note-area" id="n-next" placeholder="The three things that matter most next week..."></textarea>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+      <button class="btn btn-green" onclick="saveNote()">Save</button>
+      <span id="note-saved" style="font-size:12px;color:#0f6e56;opacity:0;transition:opacity 0.3s">Saved</span>
+    </div>
+  </div>
+</div>
+</div>
+
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import{getFirestore,doc,getDoc,setDoc}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+const app=initializeApp({apiKey:"AIzaSyCvdjNK_ohJ1dLJWdehufdjGF6FMzQK3RU",authDomain:"sttp-tracker.firebaseapp.com",projectId:"sttp-tracker",storageBucket:"sttp-tracker.firebasestorage.app",messagingSenderId:"1061059853437",appId:"1:1061059853437:web:536f08a25eed85675a0514"});
+const db=getFirestore(app);
+const docRef=doc(db,'tracker','data');
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCvdjNK_ohJ1dLJWdehufdjGF6FMzQK3RU",
-  authDomain: "sttp-tracker.firebaseapp.com",
-  projectId: "sttp-tracker",
-  storageBucket: "sttp-tracker.firebasestorage.app",
-  messagingSenderId: "1061059853437",
-  appId: "1:1061059853437:web:536f08a25eed85675a0514"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const docRef = doc(db, 'tracker', 'data');
-
-const HUSTLES = [
-  {id:'yt',name:'STTP YouTube channel',sub:'Hybrid — always running',color:'#534ab7',bg:'#eeedfe',icon:'ti-brand-youtube',xpPerTask:15,stages:[
+const HUSTLES=[
+  {id:'pd',name:'Pitch deck design',sub:'Service — Phase 1, Week 1',color:'#0f6e56',bg:'#e1f5ee',icon:'ti-presentation',xpPerTask:20,parked:false,stages:[
     {label:'Setup — weeks 1-2',tasks:[
-      {id:'yt1',txt:'Create YouTube channel with name, description, profile photo and channel art',meta:'Use Canva for art. Consistent branding with STTP identity. 1-2 hours.'},
-      {id:'yt2',txt:'Set up YouTube Studio: enable all analytics, connect email notifications',meta:'You need to see what is working from day one. Studio is your dashboard.'},
-      {id:'yt3',txt:'Write script for episode 1: introduce yourself, the $60k challenge, the plan',meta:'Hook in first 30 seconds. Use Claude STTP Project to draft. Target 6-8 min.'},
-      {id:'yt4',txt:'Record voiceover for episode 1 — real voice, no face required',meta:'Phone in a quiet room works fine. Record in short takes. Aim for natural, not polished.'},
-      {id:'yt5',txt:'Create screen recordings and graphics to pair with voiceover',meta:'Canva for title cards. Screen record your plan docs and spreadsheets as b-roll.'},
-      {id:'yt6',txt:'Edit episode 1 in CapCut — cut silences, add auto-captions, simple intro/outro',meta:'CapCut auto-captions save 30 min. Do not over-edit. First video done beats first video perfect.'},
-      {id:'yt7',txt:'Research SEO title and description using VidIQ or TubeBuddy free tier',meta:'Title: "I am trying to make $60,000 in 9 months | The plan | Week 1"'},
-      {id:'yt8',txt:'Publish episode 1 and share on LinkedIn',meta:'Do not wait. Publish and move on to episode 2.'},
-    ]},
-    {label:'Build — months 1-4',tasks:[
-      {id:'yt9',txt:'Publish 10 videos total — weekly cadence maintained',meta:'Consistency beats quality at this stage. 10 videos before worrying about production value.'},
-      {id:'yt10',txt:'Hit 100 subscribers',meta:'Screenshot for a milestone video. Share on LinkedIn. This is real social proof.'},
-      {id:'yt11',txt:'Create first monthly income report video — show real numbers',meta:'These perform well. Transparency is your edge. Even $50 earned is worth documenting.'},
-      {id:'yt12',txt:'Identify your 3 best-performing videos from Studio analytics',meta:'Check: title, thumbnail, topic, length. Double down on what the data shows.'},
-      {id:'yt13',txt:'Publish 25 videos total',meta:'At 25 videos you have enough data to know what your audience wants. Adjust accordingly.'},
-      {id:'yt14',txt:'Set up Opus Clip — repurpose 3 long videos into short clips',meta:'Cross-platform reach with zero extra filming. Opus Clip identifies best moments automatically.'},
-      {id:'yt15',txt:'Hit 500 subscribers',meta:'Meaningful milestone. Your voice is being heard. Post a thank you update video.'},
-      {id:'yt16',txt:'Add first affiliate link to a tool you genuinely use',meta:'Disclose it clearly. Even $10/month in affiliate income is the passive model working.'},
-    ]},
-    {label:'Scale — months 5-9',tasks:[
-      {id:'yt17',txt:'Hit 1,000 subscribers — apply for YouTube Partner Program',meta:'With 4,000 watch hours also met, AdSense activates. Small money but proof of scale.'},
-      {id:'yt18',txt:'Publish 50 videos total',meta:'50 videos means 50 searchable assets compounding traffic.'},
-      {id:'yt19',txt:'Generate first $100 from YouTube (AdSense + affiliate combined)',meta:'Log it. Make a video about it. This is the passive model beginning to work.'},
-      {id:'yt20',txt:'Receive first brand inquiry or sponsorship approach',meta:'Even if you say no, document it. It signals your channel has reached a meaningful audience.'},
-      {id:'yt21',txt:'Hit 2,000 subscribers',meta:'Channel is now a real asset. Every new hustle you launch has a built-in audience.'},
-    ]}
-  ]},
-  {id:'pd',name:'Pitch deck design',sub:'Service — Phase 1, Week 1',color:'#0f6e56',bg:'#e1f5ee',icon:'ti-presentation',xpPerTask:20,stages:[
-    {label:'Setup — weeks 1-2',tasks:[
-      {id:'pd1',txt:'Build 2 portfolio sample decks using Gamma and Claude — startup and consultant',meta:'3-4 hours total. These are your proof of skill. Do not rush them.'},
+      {id:'pd1',txt:'Build 2 portfolio sample decks using Gamma and Claude — startup and consultant',meta:'3-4 hours total. These are your proof of skill.'},
       {id:'pd2',txt:'Write your positioning line: "I help founders tell the story that closes the room"',meta:'Use Claude: paste your background, ask for 5 positioning variations, pick the sharpest.'},
-      {id:'pd3',txt:'Create a 1-page portfolio in Notion or Canva website showing both sample decks',meta:'Clean and simple. PDF embeds work fine. No need for a full site yet.'},
-      {id:'pd4',txt:'Write outreach DM template using Claude — direct, not salesy, leads with the problem',meta:'Paste your positioning and ask Claude to write 3 DM variations. Test each with a small batch.'},
+      {id:'pd3',txt:'Create a 1-page portfolio in Notion or Canva website showing both sample decks',meta:'Clean and simple. PDF embeds work fine.'},
+      {id:'pd4',txt:'Write outreach DM template using Claude — direct, not salesy, leads with the problem',meta:'Ask Claude to write 3 DM variations. Test each with a small batch.'},
     ]},
     {label:'Build — months 1-4',tasks:[
-      {id:'pd5',txt:'Send outreach to first 5 founders or consultants in your network',meta:'LinkedIn DM. Follow up once after 3 days. No more than one follow-up.'},
-      {id:'pd6',txt:'Land and deliver first paying client at $800-1,200',meta:'Price low for testimonial. Feed brief into Claude Pitch Deck Project. Narrative first, design second.'},
+      {id:'pd5',txt:'Send outreach to first 5 founders or consultants in your network',meta:'Direct message. Follow up once after 3 days.'},
+      {id:'pd6',txt:'Land and deliver first paying client at $800-1,200',meta:'Price low for testimonial. Feed brief into Claude Pitch Deck Project.'},
       {id:'pd7',txt:'Get written testimonial from first client — add to portfolio',meta:'3 questions: what was the problem, what did you get, would you recommend me.'},
-      {id:'pd8',txt:'Raise price to $1,500 minimum and deliver second client deck',meta:'Better positioned now you have a testimonial. Track time — target under 8 hours per deck.'},
-      {id:'pd9',txt:'Land third client through referral or follow-up outreach',meta:'Third client at $1,500-2,000. Ask each client for one referral after delivery.'},
-      {id:'pd10',txt:'Earn first $5,000 cumulative from pitch deck work',meta:'At $1,500+ per deck this is 3-4 projects. Screenshot earnings for monthly update video.'},
-      {id:'pd11',txt:'Create a YouTube video: "How I built a $2,000 pitch deck using AI"',meta:'High-value content for the channel. Drives inbound inquiries.'},
-      {id:'pd12',txt:'Raise price ceiling to $2,500 on new clients',meta:'Every testimonial earns you a price raise. You are selling outcomes, not slides.'},
+      {id:'pd8',txt:'Raise price to $1,500 minimum and deliver second client deck',meta:'Track time — target under 8 hours per deck.'},
+      {id:'pd9',txt:'Land third client through referral or follow-up outreach',meta:'Ask each client for one referral after delivery.'},
+      {id:'pd10',txt:'Earn first $5,000 cumulative from pitch deck work',meta:'Roughly 3-4 projects at your raised rate.'},
+      {id:'pd11',txt:'Raise price ceiling to $2,500 on new clients',meta:'Every testimonial earns you a price raise.'},
     ]},
     {label:'Scale — months 5-9',tasks:[
-      {id:'pd13',txt:'Earn $15,000 cumulative from pitch deck work',meta:'Roughly 6-8 projects at your raised rate. Proof the service model works.'},
-      {id:'pd14',txt:'Build a deck template pack and list it as a digital product on Gumroad',meta:'Turn your process into passive income. Price at $49-99.'},
-      {id:'pd15',txt:'Decide: continue scaling service, productise into a course, or wind down',meta:'By month 6 you have data. Make an intentional choice rather than drifting.'},
+      {id:'pd12',txt:'Earn $15,000 cumulative from pitch deck work',meta:'Roughly 6-8 projects at your raised rate.'},
+      {id:'pd13',txt:'Build a deck template pack and list it as a digital product on Gumroad',meta:'Turn your process into passive income. Price at $49-99.'},
+      {id:'pd14',txt:'Decide: continue scaling service, productise into a course, or wind down',meta:'By month 6 you have data. Make an intentional choice.'},
     ]}
   ]},
-  {id:'fp',name:'Food puns — print on demand',sub:'Passive — Phase 1, Week 1',color:'#d85a30',bg:'#faece7',icon:'ti-mood-happy',xpPerTask:12,stages:[
+  {id:'fp',name:'Food puns — print on demand',sub:'Passive — Phase 1, Week 1',color:'#d85a30',bg:'#faece7',icon:'ti-mood-happy',xpPerTask:12,parked:false,stages:[
     {label:'Setup — weeks 1-2',tasks:[
       {id:'fp1',txt:'Generate 20 food pun concepts in Claude — filter to top 10 with strongest visual potential',meta:'Prompt: "Give me 20 food puns with clear visual potential. Format: pun / food item / visual scene."'},
       {id:'fp2',txt:'Test AI image tools — run same pun through Midjourney, Adobe Firefly and ChatGPT image gen',meta:'Pick the tool that gives the most consistent, commercially usable illustration style.'},
       {id:'fp3',txt:'Lock in a consistent illustration style across 5 test images of one pun',meta:'Decide: character style, colour palette, background treatment. This is your brand identity.'},
-      {id:'fp4',txt:'Create Food Puns brand name, logo and colour palette — separate identity from STTP',meta:'Use Canva. Simple wordmark and 3-4 brand colours. 1-2 hours. Done beats perfect.'},
+      {id:'fp4',txt:'Create Food Puns brand name, logo and colour palette — separate identity from STTP',meta:'Use Canva. Simple wordmark and 3-4 brand colours. 1-2 hours.'},
       {id:'fp5',txt:'Set up Etsy store and Redbubble account under Food Puns brand',meta:'Complete: shop name, banner, about section, policies. Use Claude to write the copy.'},
       {id:'fp6',txt:'Connect Printful or Printify to Etsy store — test one physical order yourself',meta:'Test before going live. Check print quality, colours, packaging.'},
       {id:'fp7',txt:'List first 5 products: art print, card, mug, tote bag, digital download',meta:'Use Claude to write all 5 Etsy titles, descriptions and tags. EverBee for keyword research first.'},
     ]},
     {label:'Build — months 1-5',tasks:[
-      {id:'fp8',txt:'Reach 20 products listed across Etsy and Redbubble',meta:'5 new products per week on commute. Pun ideation on train, image gen and listing at night.'},
-      {id:'fp9',txt:'Make first Etsy sale',meta:'Screenshot it. Make a YouTube video about it. First passive dollar is a real milestone.'},
-      {id:'fp10',txt:'Reach 50 products listed',meta:'At 50 products the SEO starts compounding. More listings means more entry points.'},
-      {id:'fp11',txt:'Analyse first month of Etsy data — identify top 3 products by views and clicks',meta:'Double down on what is working. Drop the format of what is not getting clicks.'},
-      {id:'fp12',txt:'Generate first $100 from Food Puns (combined Etsy + Redbubble)',meta:'Passive income proof. Small but real. It earns while you are at work or sleeping.'},
+      {id:'fp8',txt:'Reach 20 products listed across Etsy and Redbubble',meta:'5 new products per week on commute.'},
+      {id:'fp9',txt:'Make first Etsy sale',meta:'Screenshot it. First passive dollar is a real milestone.'},
+      {id:'fp10',txt:'Reach 50 products listed',meta:'At 50 products the SEO starts compounding.'},
+      {id:'fp11',txt:'Analyse first month of Etsy data — identify top 3 products by views and clicks',meta:'Double down on what is working.'},
+      {id:'fp12',txt:'Generate first $100 from Food Puns (combined Etsy + Redbubble)',meta:'Passive income proof. Small but real.'},
       {id:'fp13',txt:'Reach 100 products listed',meta:'100 products is a real catalogue. Traffic compounds from here.'},
-      {id:'fp14',txt:'Set up Instagram or Pinterest account for Food Puns brand',meta:'Pinterest drives Etsy traffic organically. Post each new product with keyword-rich description.'},
-      {id:'fp15',txt:'Film YouTube video: "How I built a food pun product line using AI"',meta:'Document the real numbers: time spent, products listed, revenue earned.'},
-      {id:'fp16',txt:'Generate first $500 month from Food Puns',meta:'At this point the passive model is proven. Keep adding products and driving traffic.'},
+      {id:'fp14',txt:'Set up Instagram or Pinterest account for Food Puns brand',meta:'Pinterest drives Etsy traffic organically.'},
+      {id:'fp15',txt:'Generate first $500 month from Food Puns',meta:'At this point the passive model is proven.'},
     ]},
     {label:'Scale — months 6-9',tasks:[
-      {id:'fp17',txt:'Reach 200 products listed',meta:'200 products across multiple categories is a defensible catalogue.'},
-      {id:'fp18',txt:'Generate first $1,000 month from Food Puns',meta:'Meaningful passive income. Celebrate it. Claim a reward.'},
-      {id:'fp19',txt:'Identify top-selling categories and create product bundles or collections',meta:'Collections improve average order value and make the store feel curated.'},
+      {id:'fp16',txt:'Reach 200 products listed',meta:'200 products across multiple categories is a defensible catalogue.'},
+      {id:'fp17',txt:'Generate first $1,000 month from Food Puns',meta:'Meaningful passive income. Celebrate it. Claim a reward.'},
+      {id:'fp18',txt:'Identify top-selling categories and create product bundles or collections',meta:'Collections improve average order value.'},
     ]}
   ]},
-  {id:'li',name:'LinkedIn profile optimisation',sub:'Service — Phase 1, quick wins only',color:'#185fa5',bg:'#e6f1fb',icon:'ti-brand-linkedin',xpPerTask:10,stages:[
+  {id:'li',name:'LinkedIn profile optimisation',sub:'Service — Phase 1, quick wins only',color:'#185fa5',bg:'#e6f1fb',icon:'ti-brand-linkedin',xpPerTask:10,parked:false,stages:[
     {label:'Setup — week 1',tasks:[
-      {id:'li1',txt:'Build your Claude prompt template for LinkedIn rewrites — headline, about, experience bullets',meta:'Paste a real profile into Claude and iterate until it takes under 15 min per full rewrite.'},
-      {id:'li2',txt:'Do one free rewrite for a contact in exchange for a written testimonial',meta:'Choose someone who will actually write a good one. This is your case study.'},
+      {id:'li1',txt:'Build your Claude prompt template for LinkedIn rewrites — headline, about, experience bullets',meta:'Paste a real profile and iterate until it takes under 15 min per full rewrite.'},
+      {id:'li2',txt:'Do one free rewrite for a contact in exchange for a written testimonial',meta:'Choose someone who will actually write a good one.'},
     ]},
     {label:'Build — months 1-2',tasks:[
-      {id:'li3',txt:'Post before/after case study on LinkedIn with soft call to action',meta:'"Rewrote a profile using AI in one commute. DM me if you want yours — $200 for the next 3."'},
-      {id:'li4',txt:'Deliver 3 paid profiles at $200-300 each — commute time only',meta:'Each one takes one train ride. Fast money. Do not over-invest beyond this.'},
-      {id:'li5',txt:'Earn first $600 from LinkedIn work',meta:'This stream is done once you hit $600-900. Move on. Low ceiling, do not linger.'},
-      {id:'li6',txt:'Add LinkedIn optimisation as a $300 upsell to first AI Setup client',meta:'Bolt-on upsell. 20 minutes of work once your prompt template is dialled in.'},
+      {id:'li3',txt:'Deliver 3 paid profiles at $200-300 each — commute time only',meta:'Each one takes one train ride. Fast money.'},
+      {id:'li4',txt:'Earn first $600 from LinkedIn work',meta:'This stream is done once you hit $600-900. Move on.'},
+      {id:'li5',txt:'Add LinkedIn optimisation as a $300 upsell to first AI Setup client',meta:'Bolt-on upsell. 20 minutes of work.'},
     ]},
     {label:'Wind down — month 3+',tasks:[
-      {id:'li7',txt:'Stop actively promoting LinkedIn service — referrals only from here',meta:'Your time is worth more in AI Setup and automation now.'},
+      {id:'li6',txt:'Stop actively promoting LinkedIn service — referrals only from here',meta:'Your time is worth more in AI Setup and automation now.'},
     ]}
   ]},
-  {id:'ai',name:'AI setup & training for SMBs',sub:'Service — Phase 2, Month 2-3',color:'#534ab7',bg:'#eeedfe',icon:'ti-robot',xpPerTask:25,stages:[
+  {id:'ai',name:'AI setup & training for SMBs',sub:'Service — Phase 2, Month 2-3',color:'#534ab7',bg:'#eeedfe',icon:'ti-robot',xpPerTask:25,parked:false,stages:[
     {label:'Setup — month 1 (learning)',tasks:[
-      {id:'ai1',txt:'Complete Learn Prompting free course — focus on system prompts and chain of thought',meta:'learnprompting.org. Train commute reading. 1-2 weeks. Notes in Claude AI Setup Project.'},
-      {id:'ai2',txt:'Study OpenAI custom GPT builder — watch 3 tutorials and build as you watch',meta:'Search "custom GPT tutorial 2025" on YouTube. Build as you watch, not just watch.'},
-      {id:'ai3',txt:'Build 3 demo custom GPTs: cafe FAQ bot, law firm email drafter, agent quote generator',meta:'ChatGPT Plus required ($20/mo). These are your live demos for client meetings.'},
+      {id:'ai1',txt:'Complete Learn Prompting free course — system prompts and chain of thought sections only',meta:'learnprompting.org. Train commute reading. 1-2 weeks.'},
+      {id:'ai2',txt:'Study OpenAI custom GPT builder — watch 3 tutorials and build as you watch',meta:'Search "custom GPT tutorial 2025". Build as you watch, not just watch.'},
+      {id:'ai3',txt:'Build 3 demo custom GPTs: cafe FAQ bot, law firm email drafter, agent quote generator',meta:'ChatGPT Plus required. These are your live demos for client meetings.'},
       {id:'ai4',txt:'Write your service menu with Starter ($500 + $150/mo) and Growth ($1,200 + $300/mo) tiers',meta:'Use Claude to write the copy. Outcome-focused — time saved, not features listed.'},
     ]},
     {label:'Build — months 2-5',tasks:[
-      {id:'ai5',txt:'Offer free 1-hour AI audit to one local business owner you know personally',meta:'Find their top 3 time-wasting tasks. Document findings. Build a simple demo solution.'},
-      {id:'ai6',txt:'Deliver first paid AI setup at $500 minimum',meta:'Set up custom GPT, build prompt library, create training doc. Record screen for YouTube.'},
-      {id:'ai7',txt:'Run first team training session with client — use Loom to record it',meta:'The Loom recording becomes their rewatch resource and justifies the retainer conversation.'},
-      {id:'ai8',txt:'Convert first client to monthly retainer at $150-300/mo',meta:'Frame as: 2 hours/month of updates and support so their AI tools keep working.'},
-      {id:'ai9',txt:'Get written case study: hours saved, tasks automated, team confidence',meta:'"Saved 5 hours per week" is a headline. Use it in all future outreach.'},
-      {id:'ai10',txt:'Land second client using case study — referral or LinkedIn outreach',meta:'Target same industry as first client. Your demo already fits them.'},
-      {id:'ai11',txt:'Reach $3,000/month recurring from AI Setup retainers',meta:'Roughly 10-12 clients. Each new client compounds the monthly base.'},
-      {id:'ai12',txt:'Film YouTube video: "How I set up AI for a small business — what it actually saved them"',meta:'Real numbers, real client (anonymised). This drives inbound better than any outreach.'},
+      {id:'ai5',txt:'Offer free 1-hour AI audit to one local business owner you know personally',meta:'Find their top 3 time-wasting tasks. Document findings.'},
+      {id:'ai6',txt:'Deliver first paid AI setup at $500 minimum',meta:'Set up custom GPT, build prompt library, create training doc.'},
+      {id:'ai7',txt:'Run first team training session with client — use Loom to record it',meta:'The Loom recording justifies the retainer.'},
+      {id:'ai8',txt:'Convert first client to monthly retainer at $150-300/mo',meta:'Frame as: 2 hours/month of updates and support.'},
+      {id:'ai9',txt:'Get written case study: hours saved, tasks automated, team confidence',meta:'"Saved 5 hours per week" is a headline.'},
+      {id:'ai10',txt:'Land second client using case study — referral or outreach',meta:'Target same industry as first client.'},
+      {id:'ai11',txt:'Reach $3,000/month recurring from AI Setup retainers',meta:'Roughly 10-12 clients.'},
     ]},
     {label:'Scale — months 6-9',tasks:[
-      {id:'ai13',txt:'Reach $5,000 cumulative from AI Setup & Training work',meta:'Roughly 5-6 projects at growth tier pricing plus retainers.'},
-      {id:'ai14',txt:'Run first group workshop — "AI for small business" at $200-500 per seat',meta:'One session, multiple clients. Highest hourly rate on this list. Film it for YouTube.'},
-      {id:'ai15',txt:'Productise your training into a paid guide or course outline',meta:'Your client onboarding doc is already 80% of a product. Package and list on Gumroad.'},
+      {id:'ai12',txt:'Reach $5,000 cumulative from AI Setup & Training work',meta:'Roughly 5-6 projects at growth tier pricing plus retainers.'},
+      {id:'ai13',txt:'Run first group workshop — "AI for small business" at $200-500 per seat',meta:'One session, multiple clients. Highest hourly rate on this list.'},
+      {id:'ai14',txt:'Productise your training into a paid guide or course outline',meta:'Your client onboarding doc is already 80% of a product.'},
     ]}
   ]},
-  {id:'au',name:'AI automation & chatbots',sub:'Service — Phase 2, bundle with AI Setup',color:'#854f0b',bg:'#faeeda',icon:'ti-bolt',xpPerTask:25,stages:[
+  {id:'au',name:'AI automation & chatbots',sub:'Service — Phase 2, bundle with AI Setup',color:'#854f0b',bg:'#faeeda',icon:'ti-bolt',xpPerTask:25,parked:false,stages:[
     {label:'Setup — months 1-2 (learning)',tasks:[
-      {id:'au1',txt:'Complete Make.com beginner series on YouTube — build each scenario as you watch',meta:'Search "Make.com tutorial 2025". 4-6 hours of content. Commute watching.'},
-      {id:'au2',txt:'Build 3 demo automations: appointment SMS, new lead email alert, invoice follow-up',meta:'Make.com free tier. Connect Gmail + Google Sheets + a form. No coding required.'},
+      {id:'au1',txt:'Complete Make.com beginner series — one tutorial series start to finish, no random browsing',meta:'Search "Make.com beginner to first automation". Build each scenario as you watch.'},
+      {id:'au2',txt:'Build 3 demo automations: appointment SMS, new lead email alert, invoice follow-up',meta:'Make.com free tier. Connect Gmail + Google Sheets + a form.'},
       {id:'au3',txt:'Learn Voiceflow basics — build a working FAQ chatbot in under 3 hours',meta:'voiceflow.com free tier. Target: chatbot that answers 10 common questions.'},
-      {id:'au4',txt:'Package automation with AI Setup as Complete AI Package at $1,500-3,000',meta:'One client, one pitch, two services. Bundling makes both easier to sell.'},
+      {id:'au4',txt:'Package automation with AI Setup as Complete AI Package at $1,500-3,000',meta:'One client, one pitch, two services.'},
     ]},
     {label:'Build — months 3-6',tasks:[
       {id:'au5',txt:'Identify first real automation target — local business with obvious repetitive admin',meta:'Dentist chasing confirmations. Tradie quoting manually. Cafe managing bookings.'},
-      {id:'au6',txt:'Deliver first automation project at $500-800',meta:'Build, test, hand over with a simple user guide. Record the build for YouTube.'},
+      {id:'au6',txt:'Deliver first automation project at $500-800',meta:'Build, test, hand over with a simple user guide.'},
       {id:'au7',txt:'Set up first automation retainer at $100-200/month',meta:'Automations break when third-party tools update. Retainer covers maintenance.'},
       {id:'au8',txt:'Deliver first Complete AI Package (Setup + Automation) at $1,500-3,000',meta:'Single client, full scope. One of these per month is $18k/yr.'},
-      {id:'au9',txt:'Reach $5,000 cumulative from automation work',meta:'Roughly 3-4 projects. Document the wins for case studies and channel content.'},
-      {id:'au10',txt:'Film YouTube video: "How I automated a small business using Make.com"',meta:'Show before and after. Real time saved. Real money value. Drives inbound leads.'},
-      {id:'au11',txt:'Land third automation client through referral',meta:'If your first two clients are happy, they know someone who needs the same thing. Ask.'},
+      {id:'au9',txt:'Reach $5,000 cumulative from automation work',meta:'Roughly 3-4 projects.'},
+      {id:'au10',txt:'Land third automation client through referral',meta:'If your first two clients are happy, they know someone who needs the same thing.'},
     ]},
     {label:'Scale — months 7-9',tasks:[
-      {id:'au12',txt:'Reach $10,000 cumulative from automation and chatbot work',meta:'With bundled packages at $2,000-3,000 this is 4-5 complete packages.'},
-      {id:'au13',txt:'Reach $2,000/month recurring from automation retainers alone',meta:'10 clients at $200/mo. Automations running without you.'},
-      {id:'au14',txt:'Learn Claude API basics — add AI reasoning inside a Make.com automation',meta:'Month 7+ skill. Separates you from basic automation freelancers.'},
+      {id:'au11',txt:'Reach $10,000 cumulative from automation and chatbot work',meta:'With bundled packages at $2,000-3,000 this is 4-5 complete packages.'},
+      {id:'au12',txt:'Reach $2,000/month recurring from automation retainers alone',meta:'10 clients at $200/mo. Automations running without you.'},
+      {id:'au13',txt:'Learn Claude API basics — add AI reasoning inside a Make.com automation',meta:'Month 7+ skill. Separates you from basic automation freelancers.'},
     ]}
   ]},
-  {id:'dp',name:'Digital products & templates',sub:'Passive — Phase 3, Month 5+',color:'#3b6d11',bg:'#eaf3de',icon:'ti-file-download',xpPerTask:15,stages:[
+  {id:'dp',name:'Digital products & templates',sub:'Passive — Phase 3, Month 5+',color:'#3b6d11',bg:'#eaf3de',icon:'ti-file-download',xpPerTask:15,parked:false,stages:[
     {label:'Setup — month 5',tasks:[
-      {id:'dp1',txt:'Identify first digital product from client work or channel comments',meta:'What do clients keep asking you to document? What YouTube comments repeat? Build that.'},
-      {id:'dp2',txt:'Create first product: prompt pack, workflow template or short guide. List on Gumroad at $9-29',meta:'Done beats perfect. A $9 prompt pack with 20 prompts you already use is a real product.'},
+      {id:'dp1',txt:'Identify first digital product from client work — build what is already being asked for',meta:'What do clients keep asking you to document? Build that first.'},
+      {id:'dp2',txt:'Create first product: prompt pack, workflow template or short guide. List on Gumroad at $9-29',meta:'Done beats perfect.'},
       {id:'dp3',txt:'Write sales page copy for first product using Claude',meta:'Paste product outline: headline, 3 benefits, short description, call to action.'},
-      {id:'dp4',txt:'Promote first product in a YouTube video — show how you use it, link in description',meta:'The channel is your traffic strategy. No audience = no sales. Always lead with the video.'},
     ]},
     {label:'Build — months 5-7',tasks:[
-      {id:'dp5',txt:'Make first digital product sale',meta:'Screenshot it. Even $9 is the passive model working. Log it and make a video.'},
-      {id:'dp6',txt:'Create second and third product based on demand signals',meta:'Iterate fast. Build 3-5 small products before investing in anything bigger.'},
-      {id:'dp7',txt:'Set up separate Etsy store for professional digital products',meta:'Different buyer to Food Puns. Target small business owners and productivity buyers.'},
-      {id:'dp8',txt:'Reach $500 cumulative from digital product sales',meta:'Proof the audience-to-product funnel works. This compounds as the channel grows.'},
-      {id:'dp9',txt:'Reach $200/month recurring from digital products',meta:'Every dollar from digital products is earned without trading time.'},
+      {id:'dp4',txt:'Make first digital product sale',meta:'Screenshot it. Even $9 is the passive model working.'},
+      {id:'dp5',txt:'Create second and third product based on demand signals from client questions',meta:'Iterate fast. Build 3-5 small products before investing in anything bigger.'},
+      {id:'dp6',txt:'Set up separate Etsy store for professional digital products',meta:'Different buyer to Food Puns. Target small business owners.'},
+      {id:'dp7',txt:'Reach $500 cumulative from digital product sales',meta:'Proof the demand-to-product funnel works.'},
+      {id:'dp8',txt:'Reach $200/month recurring from digital products',meta:'Every dollar from digital products is earned without trading time.'},
     ]},
     {label:'Scale — months 8-9',tasks:[
-      {id:'dp10',txt:'Build first substantial product: ebook or mini-course based on your STTP journey',meta:'Month 8+ once you have real results to share. Draft structure in one train session with Claude.'},
-      {id:'dp11',txt:'Price at $49-99 and promote to your channel audience',meta:'Your audience has followed the journey. They trust your results. Highest-conversion launch you will have.'},
-      {id:'dp12',txt:'Reach $1,000 cumulative from digital product sales',meta:'Channel + Etsy + Gumroad compounding. Digital products scale without you.'},
+      {id:'dp9',txt:'Build first substantial product: ebook or mini-course based on STTP challenge results',meta:'Month 8+ once you have real results to share.'},
+      {id:'dp10',txt:'Price at $49-99 and promote directly to service clients and Etsy audience',meta:'Your existing clients trust your results.'},
+      {id:'dp11',txt:'Reach $1,000 cumulative from digital product sales',meta:'Etsy + Gumroad compounding. Digital products scale without you.'},
+    ]}
+  ]},
+  {id:'yt',name:'STTP YouTube channel',sub:'PARKED — revisit after challenge when circumstances allow',color:'#888780',bg:'#f1efe8',icon:'ti-brand-youtube',xpPerTask:0,parked:true,stages:[
+    {label:'Parked — no active tasks',tasks:[
+      {id:'yt1',txt:'YouTube channel is parked due to privacy requirements and time cost in the first 9 months',meta:'Revisit when results, content strategy and personal circumstances align. No fixed date.'},
     ]}
   ]},
 ];
 
-const DEFAULT_REWARDS = [
+const DEFAULT_REWARDS=[
   {id:'r1',name:'Nice takeaway dinner',cost:60,tier:1,unlock:'First $100 earned',claimed:false},
   {id:'r2',name:'Movie night out',cost:40,tier:1,unlock:'5 tasks completed',claimed:false},
   {id:'r3',name:'New book or video game',cost:50,tier:1,unlock:'10 tasks completed',claimed:false},
@@ -434,278 +378,245 @@ const DEFAULT_REWARDS = [
   {id:'r10',name:'Define your own boss reward',cost:1000,tier:4,unlock:'$60,000 — challenge complete',claimed:false},
 ];
 
-let state = {checked:{},entries:[],rewards:JSON.parse(JSON.stringify(DEFAULT_REWARDS)),streak:[],notes:{},startDate:null,currentWeek:1};
-let saveTimer = null;
-let currentPanel = 'dashboard';
-let openHustles = {};
+let state={checked:{},entries:[],rewards:JSON.parse(JSON.stringify(DEFAULT_REWARDS)),streak:[],notes:{},startDate:null,currentWeek:1};
+let saveTimer=null,currentPanel='dashboard',openHustles={};
 
-async function fbLoad() {
-  try {
-    const snap = await getDoc(docRef);
-    if (snap.exists()) {
-      const parsed = snap.data();
-      state = Object.assign(state, parsed);
-      if (!state.rewards || state.rewards.length === 0) state.rewards = JSON.parse(JSON.stringify(DEFAULT_REWARDS));
-    }
-    setSyncStatus('Synced', true);
-  } catch(e) {
-    setSyncStatus('Offline — using local data', false);
-    const local = localStorage.getItem('sttp_v3');
-    if (local) state = Object.assign(state, JSON.parse(local));
+async function fbLoad(){
+  try{
+    const snap=await getDoc(docRef);
+    if(snap.exists()){const d=snap.data();state=Object.assign(state,d);if(!state.rewards||!state.rewards.length)state.rewards=JSON.parse(JSON.stringify(DEFAULT_REWARDS));}
+    setSyncStatus('Synced',true);
+  }catch(e){
+    setSyncStatus('Offline — using local data',false);
+    const l=localStorage.getItem('sttp_v4');if(l)state=Object.assign(state,JSON.parse(l));
   }
   renderAll();
 }
 
-async function fbSave() {
-  try {
-    await setDoc(docRef, state);
-    setSyncStatus('Saved ' + new Date().toLocaleTimeString(), true);
-  } catch(e) {
-    setSyncStatus('Save failed — stored locally', false);
-  }
-  try { localStorage.setItem('sttp_v3', JSON.stringify(state)); } catch(e) {}
+async function fbSave(){
+  try{await setDoc(docRef,state);setSyncStatus('Saved '+new Date().toLocaleTimeString(),true);}
+  catch(e){setSyncStatus('Save failed — stored locally',false);}
+  try{localStorage.setItem('sttp_v4',JSON.stringify(state));}catch(e){}
 }
 
-function debounceSave() { clearTimeout(saveTimer); saveTimer = setTimeout(fbSave, 1500); }
-function setSyncStatus(msg, ok) { const el = document.getElementById('sync-st'); el.textContent = msg; el.className = 'sync-status ' + (ok ? 'ok' : 'err'); }
-function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+function debounceSave(){clearTimeout(saveTimer);saveTimer=setTimeout(fbSave,1500);}
+function setSyncStatus(msg,ok){const el=document.getElementById('sync-st');el.textContent=msg;el.className='sync '+(ok?'ok':'err');}
+function fmt(n){return'$'+Math.round(n).toLocaleString();}
 
-function getTotals() {
-  const income = state.entries.filter(e=>e.type==='income').reduce((s,e)=>s+parseFloat(e.amt||0),0);
-  const expenses = state.entries.filter(e=>e.type==='expense').reduce((s,e)=>s+parseFloat(e.amt||0),0);
-  const net = income - expenses;
-  return {income, expenses, net, rewardBudget: net * 0.05, claimed: state.rewards.filter(r=>r.claimed).reduce((s,r)=>s+parseFloat(r.cost||0),0)};
+function getTotals(){
+  const income=state.entries.filter(e=>e.type==='income').reduce((s,e)=>s+parseFloat(e.amt||0),0);
+  const expenses=state.entries.filter(e=>e.type==='expense').reduce((s,e)=>s+parseFloat(e.amt||0),0);
+  const net=income-expenses;
+  return{income,expenses,net,rewardBudget:net*0.05,claimed:state.rewards.filter(r=>r.claimed).reduce((s,r)=>s+parseFloat(r.cost||0),0)};
 }
 
-function getStreak() {
-  if (!state.streak || state.streak.length === 0) return 0;
-  const sorted = [...new Set(state.streak)].sort((a,b)=>new Date(b)-new Date(a));
-  let streak = 0; let check = new Date();
-  for (let i = 0; i < sorted.length; i++) {
-    if (new Date(sorted[i]).toDateString() === check.toDateString()) { streak++; check.setDate(check.getDate()-1); } else break;
-  }
+function getStreak(){
+  if(!state.streak||!state.streak.length)return 0;
+  const sorted=[...new Set(state.streak)].sort((a,b)=>new Date(b)-new Date(a));
+  let streak=0,check=new Date();
+  for(let i=0;i<sorted.length;i++){if(new Date(sorted[i]).toDateString()===check.toDateString()){streak++;check.setDate(check.getDate()-1);}else break;}
   return streak;
 }
 
-function getAllTasks() {
+function getAllTasks(){
   let total=0,done=0;
-  HUSTLES.forEach(h=>h.stages.forEach(s=>s.tasks.forEach(t=>{total++;if(state.checked[t.id])done++;})));
-  return {total,done};
+  HUSTLES.filter(h=>!h.parked).forEach(h=>h.stages.forEach(s=>s.tasks.forEach(t=>{total++;if(state.checked[t.id])done++;})));
+  return{total,done};
 }
 
-function getHustleXP(h) {
+function getHustleXP(h){
   let done=0,total=0;
   h.stages.forEach(s=>s.tasks.forEach(t=>{total++;if(state.checked[t.id])done++;}));
-  const xp = done * h.xpPerTask;
-  return {xp, level:Math.floor(xp/100), xpInLevel:xp%100, done, total};
+  const xp=done*h.xpPerTask;
+  return{xp,level:Math.floor(xp/100),xpInLevel:xp%100,done,total};
 }
 
-function renderAll() { renderDashboard(); if(currentPanel==='hustles') renderHustles(); if(currentPanel==='money') renderMoney(); if(currentPanel==='rewards') renderRewards(); }
+function renderAll(){renderDashboard();if(currentPanel==='hustles')renderHustles();if(currentPanel==='money')renderMoney();if(currentPanel==='rewards')renderRewards();}
 
-function renderDashboard() {
-  const t = getTotals();
-  document.getElementById('d-earned').textContent = fmt(t.income);
-  document.getElementById('d-net').textContent = fmt(t.net);
-  document.getElementById('d-exp').textContent = fmt(t.expenses);
-  document.getElementById('d-rbud').textContent = fmt(Math.max(0, t.rewardBudget - t.claimed));
-  document.getElementById('d-streak').textContent = getStreak();
-  const tasks = getAllTasks();
-  document.getElementById('d-tasks').textContent = tasks.done + '/' + tasks.total;
-  const pct = Math.min(100, Math.round((t.income/60000)*100));
-  document.getElementById('main-bar').style.width = pct + '%';
-  document.getElementById('main-lbl').textContent = fmt(t.income) + ' earned';
-  document.getElementById('main-pct').textContent = pct + '% — ' + fmt(Math.max(0,60000-t.income)) + ' to go';
-  const today = new Date().toDateString();
-  const todayDone = state.streak && state.streak.includes(today);
-  const tc = document.getElementById('today-check');
-  tc.style.borderColor = todayDone ? '#1d9e75' : '#ddd';
-  tc.style.background = todayDone ? '#e1f5ee' : '#fff';
-  tc.querySelector('i').style.color = todayDone ? '#1d9e75' : '#aaa';
-  document.getElementById('today-lbl').textContent = todayDone ? 'Today logged!' : 'Mark today as worked';
-  document.getElementById('streak-lbl').textContent = getStreak() + ' day streak';
+function renderDashboard(){
+  const t=getTotals();
+  document.getElementById('d-earned').textContent=fmt(t.income);
+  document.getElementById('d-net').textContent=fmt(t.net);
+  document.getElementById('d-exp').textContent=fmt(t.expenses);
+  document.getElementById('d-rbud').textContent=fmt(Math.max(0,t.rewardBudget-t.claimed));
+  document.getElementById('d-streak').textContent=getStreak();
+  const tasks=getAllTasks();
+  document.getElementById('d-tasks').textContent=tasks.done+'/'+tasks.total;
+  const pct=Math.min(100,Math.round((t.income/60000)*100));
+  document.getElementById('main-bar').style.width=pct+'%';
+  document.getElementById('main-lbl').textContent=fmt(t.income)+' earned';
+  document.getElementById('main-pct').textContent=pct+'% — '+fmt(Math.max(0,60000-t.income))+' to go';
+  const today=new Date().toDateString();
+  const todayDone=state.streak&&state.streak.includes(today);
+  const tc=document.getElementById('today-check');
+  tc.style.borderColor=todayDone?'#1d9e75':'#ddd';
+  tc.style.background=todayDone?'#e1f5ee':'#fff';
+  tc.querySelector('i').style.color=todayDone?'#1d9e75':'#aaa';
+  document.getElementById('today-lbl').textContent=todayDone?'Today logged!':'Mark today as worked';
+  document.getElementById('streak-lbl').textContent=getStreak()+' day streak';
   renderStreakDots();
-  const xpWrap = document.getElementById('dash-xp');
-  xpWrap.innerHTML = '';
-  HUSTLES.forEach(h => {
-    const {xp,level,xpInLevel,done,total} = getHustleXP(h);
-    const row = document.createElement('div');
-    row.style.cssText = 'margin-bottom:12px';
-    row.innerHTML = `<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:500">${h.name}</span><span style="font-size:11px;color:#888">Lvl ${level} &nbsp;|&nbsp; ${done}/${total} &nbsp;|&nbsp; ${xp} XP</span></div><div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${xpInLevel}%;background:${h.color}"></div></div>`;
+  const xpWrap=document.getElementById('dash-xp');xpWrap.innerHTML='';
+  HUSTLES.filter(h=>!h.parked).forEach(h=>{
+    const{xp,level,xpInLevel,done,total}=getHustleXP(h);
+    const row=document.createElement('div');row.style.cssText='margin-bottom:12px';
+    row.innerHTML=`<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;font-weight:500">${h.name}</span><span style="font-size:11px;color:#888">Lvl ${level} | ${done}/${total} | ${xp} XP</span></div><div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${xpInLevel}%;background:${h.color}"></div></div>`;
     xpWrap.appendChild(row);
   });
 }
 
-function renderStreakDots() {
-  const el = document.getElementById('streak-dots'); el.innerHTML = '';
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate()-i);
-    const ds = d.toDateString();
-    const done = state.streak && state.streak.includes(ds);
-    const div = document.createElement('div');
-    div.className = 'streak-day' + (done?' done':'') + (i===0&&!done?' today':'');
-    div.title = ds; div.textContent = d.getDate();
-    el.appendChild(div);
+function renderStreakDots(){
+  const el=document.getElementById('streak-dots');el.innerHTML='';
+  for(let i=13;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const ds=d.toDateString();const done=state.streak&&state.streak.includes(ds);
+    const div=document.createElement('div');
+    div.className='streak-day'+(done?' done':'')+(i===0&&!done?' today':'');
+    div.title=ds;div.textContent=d.getDate();el.appendChild(div);
   }
 }
 
-function toggleToday() {
-  if (!state.streak) state.streak = [];
-  const today = new Date().toDateString();
-  if (state.streak.includes(today)) state.streak = state.streak.filter(d=>d!==today);
-  else { state.streak.push(today); if (!state.startDate) state.startDate = new Date().toISOString().split('T')[0]; }
-  debounceSave(); renderDashboard();
+function toggleToday(){
+  if(!state.streak)state.streak=[];
+  const today=new Date().toDateString();
+  if(state.streak.includes(today))state.streak=state.streak.filter(d=>d!==today);
+  else{state.streak.push(today);if(!state.startDate)state.startDate=new Date().toISOString().split('T')[0];}
+  debounceSave();renderDashboard();
 }
 
-function renderHustles() {
-  const el = document.getElementById('hustle-list'); el.innerHTML = '';
-  HUSTLES.forEach(h => {
-    const {xp,level,xpInLevel,done,total} = getHustleXP(h);
-    const isOpen = openHustles[h.id];
-    const card = document.createElement('div');
-    card.className = 'hustle-card';
-    let bodyHtml = '';
-    if (isOpen) {
-      bodyHtml = '<div class="hustle-body">';
-      h.stages.forEach(s => {
-        bodyHtml += `<div class="stage-label">${s.label}</div>`;
-        s.tasks.forEach(t => {
-          const isDone = !!state.checked[t.id];
-          bodyHtml += `<div class="task-row"><div class="task-check${isDone?' done':''}" onclick="toggleTask('${t.id}')" role="checkbox" aria-checked="${isDone}"></div><div class="task-info"><div class="task-txt${isDone?' done':''}">${t.txt}</div><div class="task-meta">${t.meta}</div></div><div class="xp-badge">+${h.xpPerTask} XP</div></div>`;
+function renderHustles(){
+  const el=document.getElementById('hustle-list');el.innerHTML='';
+  HUSTLES.forEach(h=>{
+    const{xp,level,xpInLevel,done,total}=getHustleXP(h);
+    const isOpen=openHustles[h.id];
+    const card=document.createElement('div');card.className='hustle-card'+(h.parked?' parked':'');
+    let bodyHtml='';
+    if(isOpen){
+      bodyHtml='<div class="hustle-body">';
+      h.stages.forEach(s=>{
+        bodyHtml+=`<div class="stage-label">${s.label}</div>`;
+        s.tasks.forEach(t=>{
+          const isDone=!!state.checked[t.id];
+          const badge=h.parked?`<div class="parked-badge">Parked</div>`:`<div class="xp-badge">+${h.xpPerTask} XP</div>`;
+          const checkStyle=h.parked?'cursor:default;opacity:0.5':'';
+          const onclick=h.parked?'':`onclick="toggleTask('${t.id}')"`;
+          bodyHtml+=`<div class="task-row"><div class="task-check${isDone?' done':''}" ${onclick} style="${checkStyle}" role="checkbox" aria-checked="${isDone}"></div><div class="task-info"><div class="task-txt${isDone?' done':''}">${t.txt}</div><div class="task-meta">${t.meta}</div></div>${badge}</div>`;
         });
       });
-      bodyHtml += '</div>';
+      bodyHtml+='</div>';
     }
-    card.innerHTML = `<div class="hustle-header" onclick="toggleHustle('${h.id}')"><div class="hustle-icon" style="background:${h.bg}"><i class="ti ${h.icon}" style="color:${h.color};font-size:18px"></i></div><div class="hustle-info"><div class="hustle-name">${h.name}</div><div class="hustle-sub">${h.sub} &nbsp;|&nbsp; Lvl ${level} &nbsp;|&nbsp; ${done}/${total} tasks &nbsp;|&nbsp; ${xp} XP</div><div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${xpInLevel}%;background:${h.color}"></div></div></div><i class="ti ti-chevron-down chevron${isOpen?' open':''}"></i></div>${bodyHtml}`;
+    const subLine=h.parked
+      ?`<div style="font-size:11px;color:#888;font-style:italic">${h.sub}</div>`
+      :`<div class="hustle-sub">${h.sub} | Lvl ${level} | ${done}/${total} tasks | ${xp} XP</div>`;
+    const xpBarHtml=!h.parked?`<div class="xp-bar-bg"><div class="xp-bar-fill" style="width:${xpInLevel}%;background:${h.color}"></div></div>`:'';
+    card.innerHTML=`<div class="hustle-header" onclick="toggleHustle('${h.id}')"><div class="hustle-icon" style="background:${h.bg}"><i class="ti ${h.icon}" style="color:${h.color};font-size:18px"></i></div><div class="hustle-info"><div class="hustle-name">${h.name}</div>${subLine}${xpBarHtml}</div><i class="ti ti-chevron-down chevron${isOpen?' open':''}"></i></div>${bodyHtml}`;
     el.appendChild(card);
   });
 }
 
-function toggleHustle(id) { openHustles[id] = !openHustles[id]; renderHustles(); }
+function toggleHustle(id){openHustles[id]=!openHustles[id];renderHustles();}
+function toggleTask(tid){state.checked[tid]=!state.checked[tid];if(!state.startDate)state.startDate=new Date().toISOString().split('T')[0];debounceSave();renderHustles();renderDashboard();}
 
-function toggleTask(tid) {
-  state.checked[tid] = !state.checked[tid];
-  if (!state.startDate) state.startDate = new Date().toISOString().split('T')[0];
-  debounceSave(); renderHustles(); renderDashboard();
-}
-
-function renderMoney() {
-  const t = getTotals();
-  document.getElementById('m-inc').textContent = fmt(t.income);
-  document.getElementById('m-exp').textContent = fmt(t.expenses);
-  document.getElementById('m-net').textContent = fmt(t.net);
-  const mon = new Date().toLocaleString('default',{month:'short',year:'numeric'});
-  const monthNet = state.entries.filter(e=>e.mon===mon).reduce((s,e)=>s+(e.type==='income'?1:-1)*parseFloat(e.amt||0),0);
-  document.getElementById('m-mon').textContent = fmt(monthNet);
-  const tbody = document.getElementById('entries-body'); tbody.innerHTML = '';
-  [...state.entries].reverse().forEach((e,ri) => {
-    const i = state.entries.length-1-ri;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td><span class="type-badge ${e.type==='income'?'income-badge':'expense-badge'}">${e.type}</span></td><td>${e.src}</td><td style="color:${e.type==='income'?'#0f6e56':'#a32d2d'}">${e.type==='income'?'+':'-'}${fmt(e.amt)}</td><td>${e.mon||''}</td><td><button class="del-btn" onclick="delEntry(${i})">&#x2715;</button></td>`;
+function renderMoney(){
+  const t=getTotals();
+  document.getElementById('m-inc').textContent=fmt(t.income);document.getElementById('m-exp').textContent=fmt(t.expenses);document.getElementById('m-net').textContent=fmt(t.net);
+  const mon=new Date().toLocaleString('default',{month:'short',year:'numeric'});
+  const monthNet=state.entries.filter(e=>e.mon===mon).reduce((s,e)=>s+(e.type==='income'?1:-1)*parseFloat(e.amt||0),0);
+  document.getElementById('m-mon').textContent=fmt(monthNet);
+  const tbody=document.getElementById('entries-body');tbody.innerHTML='';
+  [...state.entries].reverse().forEach((e,ri)=>{
+    const i=state.entries.length-1-ri;const tr=document.createElement('tr');
+    tr.innerHTML=`<td><span class="type-badge ${e.type==='income'?'income-badge':'expense-badge'}">${e.type}</span></td><td>${e.src}</td><td style="color:${e.type==='income'?'#0f6e56':'#a32d2d'}">${e.type==='income'?'+':'-'}${fmt(e.amt)}</td><td>${e.mon||''}</td><td><button class="del-btn" onclick="delEntry(${i})">&#x2715;</button></td>`;
     tbody.appendChild(tr);
   });
   renderMoneyChart();
 }
 
-function renderMoneyChart() {
-  const monthly = {};
+function renderMoneyChart(){
+  const monthly={};
   state.entries.forEach(e=>{const m=e.mon||'?';if(!monthly[m])monthly[m]={inc:0,exp:0};if(e.type==='income')monthly[m].inc+=parseFloat(e.amt||0);else monthly[m].exp+=parseFloat(e.amt||0);});
-  const keys = Object.keys(monthly);
-  const maxVal = Math.max(...keys.map(k=>Math.max(monthly[k].inc,monthly[k].exp)),1);
-  const chart = document.getElementById('money-chart'); const lbls = document.getElementById('money-chart-lbl');
-  chart.innerHTML=''; lbls.innerHTML='';
+  const keys=Object.keys(monthly);const maxVal=Math.max(...keys.map(k=>Math.max(monthly[k].inc,monthly[k].exp)),1);
+  const chart=document.getElementById('money-chart');const lbls=document.getElementById('money-chart-lbl');chart.innerHTML='';lbls.innerHTML='';
   keys.forEach(k=>{
-    const ih=Math.round((monthly[k].inc/maxVal)*84)+3; const eh=Math.round((monthly[k].exp/maxVal)*84)+3;
+    const ih=Math.round((monthly[k].inc/maxVal)*84)+3;const eh=Math.round((monthly[k].exp/maxVal)*84)+3;
     const col=document.createElement('div');col.className='bar-col';
     col.innerHTML=`<div style="display:flex;gap:2px;align-items:flex-end;flex:1;width:100%"><div class="bar-rect bar-i" style="height:${ih}px;flex:1"></div><div class="bar-rect bar-e" style="height:${eh}px;flex:1"></div></div>`;
-    chart.appendChild(col);
-    const lbl=document.createElement('div');lbl.className='bar-lbl';lbl.style.flex='1';lbl.textContent=k.split(' ')[0];
-    lbls.appendChild(lbl);
+    chart.appendChild(col);const lbl=document.createElement('div');lbl.className='bar-lbl';lbl.style.flex='1';lbl.textContent=k.split(' ')[0];lbls.appendChild(lbl);
   });
 }
 
-function addEntry() {
-  const type=document.getElementById('e-type').value; const src=document.getElementById('e-src').value.trim();
+function addEntry(){
+  const type=document.getElementById('e-type').value,src=document.getElementById('e-src').value.trim();
   const amt=parseFloat(document.getElementById('e-amt').value);
   const mon=document.getElementById('e-mon').value.trim()||new Date().toLocaleString('default',{month:'short',year:'numeric'});
-  if(!src||isNaN(amt)||amt<=0) return;
-  if(!state.startDate) state.startDate=new Date().toISOString().split('T')[0];
+  if(!src||isNaN(amt)||amt<=0)return;
+  if(!state.startDate)state.startDate=new Date().toISOString().split('T')[0];
   state.entries.push({type,src,amt,mon});
-  document.getElementById('e-src').value=''; document.getElementById('e-amt').value='';
-  debounceSave(); renderMoney(); renderDashboard();
+  document.getElementById('e-src').value='';document.getElementById('e-amt').value='';
+  debounceSave();renderMoney();renderDashboard();
 }
 
-function delEntry(i) { state.entries.splice(i,1); debounceSave(); renderMoney(); renderDashboard(); }
+function delEntry(i){state.entries.splice(i,1);debounceSave();renderMoney();renderDashboard();}
 
-function renderRewards() {
-  const t=getTotals(); const budget=Math.max(0,t.rewardBudget);
-  const claimed=state.rewards.filter(r=>r.claimed).reduce((s,r)=>s+parseFloat(r.cost||0),0);
-  const remaining=Math.max(0,budget-claimed);
-  document.getElementById('r-budget').textContent=fmt(budget);
-  document.getElementById('r-claimed').textContent=fmt(claimed);
-  document.getElementById('r-remaining').textContent=fmt(remaining);
+function renderRewards(){
+  const t=getTotals();const budget=Math.max(0,t.rewardBudget);
+  const claimed=state.rewards.filter(r=>r.claimed).reduce((s,r)=>s+parseFloat(r.cost||0),0);const remaining=Math.max(0,budget-claimed);
+  document.getElementById('r-budget').textContent=fmt(budget);document.getElementById('r-claimed').textContent=fmt(claimed);document.getElementById('r-remaining').textContent=fmt(remaining);
   const pct=budget>0?Math.min(100,Math.round((claimed/budget)*100)):0;
-  document.getElementById('r-bar').style.width=pct+'%'; document.getElementById('r-pct').textContent=pct+'%';
-  const grid=document.getElementById('reward-grid'); grid.innerHTML='';
+  document.getElementById('r-bar').style.width=pct+'%';document.getElementById('r-pct').textContent=pct+'%';
+  const grid=document.getElementById('reward-grid');grid.innerHTML='';
   state.rewards.forEach((r,i)=>{
-    const canAfford=remaining>=r.cost;
-    const tierClass=['','t1','t2','t3','t4'][parseInt(r.tier)||1];
-    const tierName=['','Tier 1','Tier 2','Tier 3','Tier 4'][parseInt(r.tier)||1];
-    const card=document.createElement('div');
-    card.className='reward-card'+(r.claimed?' claimed':canAfford?' unlocked':' locked');
+    const canAfford=remaining>=r.cost;const tierClass=['','t1','t2','t3','t4'][parseInt(r.tier)||1];const tierName=['','Tier 1','Tier 2','Tier 3','Tier 4'][parseInt(r.tier)||1];
+    const card=document.createElement('div');card.className='reward-card'+(r.claimed?' claimed':canAfford?' unlocked':' locked');
     card.innerHTML=`<span class="reward-tier ${tierClass}">${tierName}</span><div class="reward-name">${r.name}</div><div class="reward-cost">${fmt(r.cost)}</div><div class="reward-unlock">Unlock: ${r.unlock}</div>${r.claimed?`<button class="claim-btn" onclick="unclaimReward(${i})">Unclaim</button>`:canAfford?`<button class="claim-btn green-btn" onclick="claimReward(${i})">Claim reward</button>`:`<button class="claim-btn" disabled>Need ${fmt(r.cost-remaining)} more budget</button>`}<div class="unlock-flash" id="flash-${i}">Reward unlocked!</div>`;
     grid.appendChild(card);
   });
 }
 
-function claimReward(i) {
-  const t=getTotals(); const claimed=state.rewards.filter(r=>r.claimed).reduce((s,r)=>s+parseFloat(r.cost||0),0);
-  if(Math.max(0,t.rewardBudget-claimed)<state.rewards[i].cost) return;
-  state.rewards[i].claimed=true; debounceSave();
-  const flash=document.getElementById('flash-'+i);
-  if(flash){flash.style.opacity='1';setTimeout(()=>flash.style.opacity='0',1500);}
+function claimReward(i){
+  const t=getTotals();const claimed=state.rewards.filter(r=>r.claimed).reduce((s,r)=>s+parseFloat(r.cost||0),0);
+  if(Math.max(0,t.rewardBudget-claimed)<state.rewards[i].cost)return;
+  state.rewards[i].claimed=true;debounceSave();
+  const flash=document.getElementById('flash-'+i);if(flash){flash.style.opacity='1';setTimeout(()=>flash.style.opacity='0',1500);}
   setTimeout(()=>renderRewards(),200);
 }
 
-function unclaimReward(i) { state.rewards[i].claimed=false; debounceSave(); renderRewards(); }
+function unclaimReward(i){state.rewards[i].claimed=false;debounceSave();renderRewards();}
 
-function addReward() {
-  const name=document.getElementById('rw-name').value.trim(); const cost=parseFloat(document.getElementById('rw-cost').value);
-  const tier=document.getElementById('rw-tier').value; const unlock=document.getElementById('rw-unlock').value.trim();
-  if(!name||isNaN(cost)) return;
+function addReward(){
+  const name=document.getElementById('rw-name').value.trim();const cost=parseFloat(document.getElementById('rw-cost').value);
+  const tier=document.getElementById('rw-tier').value;const unlock=document.getElementById('rw-unlock').value.trim();
+  if(!name||isNaN(cost))return;
   state.rewards.push({id:'r'+Date.now(),name,cost,tier,unlock:unlock||'Set your own goal',claimed:false});
-  document.getElementById('rw-name').value=''; document.getElementById('rw-cost').value=''; document.getElementById('rw-unlock').value='';
-  debounceSave(); renderRewards();
+  document.getElementById('rw-name').value='';document.getElementById('rw-cost').value='';document.getElementById('rw-unlock').value='';
+  debounceSave();renderRewards();
 }
 
-function changeWeek(d) { saveNote(); state.currentWeek=Math.max(1,Math.min(40,(state.currentWeek||1)+d)); document.getElementById('wk-lbl').textContent='Week '+state.currentWeek; loadNote(); }
+function changeWeek(d){saveNote();state.currentWeek=Math.max(1,Math.min(40,(state.currentWeek||1)+d));document.getElementById('wk-lbl').textContent='Week '+state.currentWeek;loadNote();}
 
-function loadNote() {
-  const w='w'+(state.currentWeek||1); const n=(state.notes||{})[w]||{};
-  document.getElementById('n-did').value=n.did||''; document.getElementById('n-learned').value=n.learned||''; document.getElementById('n-next').value=n.next||'';
+function loadNote(){
+  const w='w'+(state.currentWeek||1);const n=(state.notes||{})[w]||{};
+  document.getElementById('n-did').value=n.did||'';document.getElementById('n-learned').value=n.learned||'';document.getElementById('n-next').value=n.next||'';
 }
 
-function saveNote() {
-  const w='w'+(state.currentWeek||1); if(!state.notes) state.notes={};
+function saveNote(){
+  const w='w'+(state.currentWeek||1);if(!state.notes)state.notes={};
   state.notes[w]={did:document.getElementById('n-did').value,learned:document.getElementById('n-learned').value,next:document.getElementById('n-next').value};
-  debounceSave(); const el=document.getElementById('note-saved'); el.style.opacity='1'; setTimeout(()=>el.style.opacity='0',2000);
+  debounceSave();const el=document.getElementById('note-saved');el.style.opacity='1';setTimeout(()=>el.style.opacity='0',2000);
 }
 
-function nav(panel) {
+function nav(panel){
   currentPanel=panel;
-  document.querySelectorAll('.nav-btn').forEach((b,i)=>{const panels=['dashboard','hustles','money','rewards','notes'];b.classList.toggle('active',panels[i]===panel);});
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>{const p=['dashboard','hustles','money','rewards','notes'];b.classList.toggle('active',p[i]===panel);});
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById(panel).classList.add('active');
-  if(panel==='hustles') renderHustles();
-  if(panel==='money') renderMoney();
-  if(panel==='rewards') renderRewards();
+  if(panel==='hustles')renderHustles();if(panel==='money')renderMoney();if(panel==='rewards')renderRewards();
   if(panel==='notes'){document.getElementById('wk-lbl').textContent='Week '+(state.currentWeek||1);loadNote();}
 }
 
-window.toggleToday=toggleToday; window.toggleHustle=toggleHustle; window.toggleTask=toggleTask;
-window.addEntry=addEntry; window.delEntry=delEntry; window.claimReward=claimReward;
-window.unclaimReward=unclaimReward; window.addReward=addReward;
-window.changeWeek=changeWeek; window.saveNote=saveNote; window.nav=nav;
-
+window.toggleToday=toggleToday;window.toggleHustle=toggleHustle;window.toggleTask=toggleTask;
+window.addEntry=addEntry;window.delEntry=delEntry;window.claimReward=claimReward;
+window.unclaimReward=unclaimReward;window.addReward=addReward;window.changeWeek=changeWeek;
+window.saveNote=saveNote;window.nav=nav;
 fbLoad();
 </script>
 </body>
